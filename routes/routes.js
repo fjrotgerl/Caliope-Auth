@@ -30,6 +30,7 @@ router.post('/verify-token', function (req, res) {
   if(!verifyToken.access(req.headers.authorization)){
       res.sendStatus(401)
   }
+  res.json(message);
 });
 
 router.post('/refresh-token', function (req, res) {
