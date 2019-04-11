@@ -1,15 +1,15 @@
 # Caliope
-### Servidor de autorización local + Google
+### Servidor de autorizaciï¿½n local + Google
 
 Para iniciar el servidor introduce el siguiente comando en el directorio principal:
 
 ```javascript
-node index.js
+node app.js
 ```
 
 ### Endpoints
 
-Obtener el token local (pasar por parámetros "username" y "password") :
+Obtener el token local (pasar por parï¿½metros "username" y "password") :
 ```
 POST /token-local
 ```

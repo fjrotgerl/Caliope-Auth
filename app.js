@@ -13,5 +13,3 @@ app.use('/', routes)
 app.listen(3001, function () {
     console.log('Servidor de autenticación iniciado en el puerto ' + constants.PORTSERVER + '.');
 });
-
-module.exports = app
