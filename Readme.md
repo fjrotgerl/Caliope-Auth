@@ -9,12 +9,12 @@ node index.js
 
 ### Endpoints
 
-Obtener el token local:
+Obtener el token local (pasar por parámetros "username" y "password") :
 ```
 POST /token-local
 ```
 
-Obtener el token de google:
+Obtener el token de google (entras por "web" y te logeas):
 ```
 GET /token-google
 ```
