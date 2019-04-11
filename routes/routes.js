@@ -1,52 +1,50 @@
 const express = require('express');
-const passport = require('passport');
-const constants = require('../constants.js');
-const jwt = require('jsonwebtoken');
-const path = express.Router();
+const cors = require('cors');
+const router = express.Router();
+router.use(cors({credentials: true, origin: '*'}));
+const verifyToken = require('../tokenVerify/tokenVerificator');
+const tokenGenerator = require ('../tokenGenerate/tokenGenerator');
+const passport = require('../config/passport');
 
-//End Point with verify Logic
-path.post('/verify', function (req, res) {
 
-  if (req.headers.authorization) {
-    let token = req.headers.authorization.split(" ")[1];
-    if (token) {
-      try {
-        jwt.verify(token, constants.SECRET_JWT, function(err, decoded) {      
-          if (err) {
-            return res.json({ success: false, message: 'Failed to authenticate token.' });    
-          } else {
-                // if everything is good return this json
-                return res.json({ success: true, message: 'Is verified.' });  
-              }
-            });
-          } catch (err) {
-          res.send(400);
-        }
-      } else {
-        res.send(400);
-      }
-  } else {
-    res.send(401);
+router.post('/token-local', passport.authenticate('local', {session: false}), function (req, res) {
+  let token = tokenGenerator.access(req.user)
+  let refresh = tokenGenerator.refresh(token)
+  res.header("Authorization", "Bearer " + token)
+  res.json("Bearer "+token);
+});
+
+router.get('/token-google', passport.authenticate('google', {scope: ['profile']}));
+
+router.get('/token-google/callback', passport.authenticate('google', {}), function (req, res) {
+  let token = tokenGenerator.access(req.user)
+  let refresh = tokenGenerator.refresh(token)
+  res.header("Authorization", "Bearer " + token)
+  res.json(refresh);
+});
+
+router.post('/verify-token', function (req, res) {
+
+  let message = verifyToken.access(req.headers.authorization);
+  if(!verifyToken.access(req.headers.authorization)){
+
+      res.sendStatus(401)
   }
-    
-    });
-  
-  //End Point with Google Auth
-  path.get('/google',
-    passport.authenticate('google', { scope: ['profile'] }));
-  
-  path.get('/google/callback', 
-    passport.authenticate('google',{
-      failureRedirect: "/auth/google",
-      
-      }),
-    function(req, res) {
-      let token = jwt.sign({
-        profile: req.user,
-    }, constants.SECRET_JWT, { expiresIn: constants.TOKEN_EXPIRE })
-    // Successful authentication, send Token.
-      res.json({ token: token });
-    });
+  //res.json(message);
+});
 
+router.post('/refresh-token', function (req, res) {
+  let user = verifyToken.refresh(req.headers.refreshtoken);
+  if(user){
+      user = JSON.parse(Buffer.from(user.access_token.split(".")[1], 'base64').toString("ascii"))
+      console.log("token refresh")
+      let token = tokenGenerator.access(user)
+      let refresh = tokenGenerator.refresh(token)
+      res.header("Authorization", "Bearer " + token)
+      res.json(refresh);
+  }else{
+      res.sendStatus(401)
+  }
+});
 
-  module.exports = path;
+module.exports = router;

@@ -1,22 +1,22 @@
-const express = require('express');
-const app = express();
-const passport = require('passport');
-const constants = require('./constants.js');
-const routes = require('./routes/routes.js');
-const bodyParser = require('body-parser');
+const app = require('./app');
+const mongoose = require('mongoose');
+const constants = require('./constants');
+const user = require('./model/user');
 
-//Paspport Config
-require('./config/passport.js');
+mongoose.connect(constants.DB).then(() => {
+    app.listen(constants.PORTSERVER, function () {
+        console.log('Authentication module listening on port ' + constants.PORTSERVER + '!');
+        /*let usr = new user({
+            "name": "javi",
+            "username": "Javi Rotger",
+            "surname": "Rotger",
+            "password": "123",
+            "rols": [{"tipus": "1"}]
+        })
+        usr.save(function (err, newUser) {
+        });*/
 
-//Without this you can't get data of request
-app.use(bodyParser.urlencoded({ extended: false }))
-
-//Start passport
-app.use(passport.initialize());
-//Configure  all entdpoints in routes.js for works in /auth/... 
-app.use('/auth', routes);
-
-
-app.listen(constants.PORTSERVER, function () {
-  console.log('AuthServer listening on port:' + constants.PORTSERVER);
+    });
+}, err => {
+    console.log(err)
 });
