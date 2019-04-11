@@ -11,7 +11,7 @@ app.use(bodyParser.json())
 app.use('/', routes)
 
 app.listen(3001, function () {
-    console.log('Example app listening on port ' + constants.PORTSERVER + '!');
+    console.log('Servidor de autenticación iniciado en el puerto ' + constants.PORTSERVER + '.');
 });
 
 module.exports = app
