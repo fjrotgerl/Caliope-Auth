@@ -1,5 +1,5 @@
 {
-  "name": "google-auth",
+  "name": "caliope-auth",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,8 @@
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "jsonwebtoken": "^8.1.1",
-    "mongoose": "^5.0.5",
+    "moment": "^2.24.0",
+    "node-fetch": "^2.3.0",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^1.0.0",
     "passport-http": "^0.3.0",

@@ -2,13 +2,18 @@ const jwt       = require('jsonwebtoken');
 const constants = require('../constants.js');
 
 function generateToken(user) {
-
+    
     let userData =
         {
-            "name": user.name,
-            "surname": user.surname,
-            "username": user.username,
-            "rols": user.rols
+            "username"         : user.username,
+            "email"            : user.email,
+            "nombre"           : user.nombre,
+            "apellidos"        : user.apellidos,
+            "permiso"          : user.permiso,
+            "numeroSeguidores" : user.numeroSeguidores,
+            "numeroSeguidos"   : user.numeroSeguidos,
+            "googleId"         : user.googleId
+            
         }
 
     return jwt.sign(userData,constants.SECRET_KEY, {expiresIn: constants.TOKEN_EXPIRE});
