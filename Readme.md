@@ -24,7 +24,7 @@ Callback de google:
 GET /token-google/callback
 ```
 
-Verificar el token:
+Verificar el token (verifica el access token):
 ```
 POST /verify-token
 ```
