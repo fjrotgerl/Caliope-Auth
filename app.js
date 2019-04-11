@@ -10,6 +10,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use('/', routes)
 
-app.listen(3001, function () {
+app.listen(constants.PORTSERVER, function () {
     console.log('Servidor de autenticación iniciado en el puerto ' + constants.PORTSERVER + '.');
 });

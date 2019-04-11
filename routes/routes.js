@@ -22,6 +22,7 @@ router.get('/token-google/callback', passport.authenticate('google', {}), functi
   let refresh = tokenGenerator.refresh(token)
   res.header("Authorization", "Bearer " + token)
   res.json(refresh);
+  //res.redirect("http://localhost:8081/");
 });
 
 router.post('/verify-token', function (req, res) {
