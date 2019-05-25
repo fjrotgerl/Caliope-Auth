@@ -11,9 +11,10 @@ router.use(cors({credentials: true, origin: '*'}));
 router.post('/token-local', passport.authenticate('local', {session: false}), function (req, res) {
   let token = tokenGenerator.access(req.user)
   let refresh = tokenGenerator.refresh(token)
-  res.header("Authorization", "Bearer " + token)
+  //res.header("Authorization", "Bearer " + token)
   res.json("Bearer "+ token);
 });
+
 
 router.get('/token-google', passport.authenticate('google', {scope: ['https://www.googleapis.com/auth/userinfo.profile','https://www.googleapis.com/auth/userinfo.email']}));
 

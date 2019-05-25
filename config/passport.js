@@ -53,6 +53,7 @@ passport.use(new GoogleStrategy({
 
 passport.use(new LocalStrategy(
   function (username, password, done) {
+      if (username === null || username === "" || password === null || password === "") { return; }
 
     async function auth() {
         let varUser = await fetch(constants.API_URL + "/getUsuarioById/" + username)
