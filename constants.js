@@ -11,6 +11,6 @@ exports.CLIENT_SECRET        = "yUEYFbJoAithER9yt_AdYJ5c";
 exports.CALLBACK_URL         = "http://localhost:" + PORTSERVER + "/token-google/callback";
 
 exports.SECRET_KEY           = "secreto";
-exports.TOKEN_EXPIRE         = 60 * 30;
+exports.TOKEN_EXPIRE         = 60 * 60 * 30;
 exports.SECRET_KEY_REFRESH   = "secreto_refrescante";
-exports.TOKEN_REFRESH_EXPIRE = 24 * 60 * 60;
+exports.TOKEN_REFRESH_EXPIRE = 24 * 60 * 60 * 60;
