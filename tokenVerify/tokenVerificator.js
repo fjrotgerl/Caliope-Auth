@@ -15,6 +15,8 @@ function verifytoken(token, decrypt) {
 }
 
 function verifyRefreshToken(token) {
+    token = token.replace('Bearer ','');
+
     try {
         let decode = jwt.verify(token,constants.SECRET_KEY_REFRESH);
         return decode

@@ -5,7 +5,7 @@ const constants      = require('../constants.js');
 const fetch          = require("node-fetch");
 const moment         = require("moment");
 const md5            = require("md5");
-const nodemailer       = require('nodemailer');
+const mailer         = require('../mailer');
 
 passport.serializeUser(function(user, cb) {
     cb(null, user);
@@ -27,32 +27,10 @@ passport.use(new GoogleStrategy({
               .then(response => response.json())
               .catch( error => {
 
-                  let password = Math.floor((Math.random() * 100000) + 999999);
+                  let password = Math.floor((Math.random() * 100000) + 1).toString();
                   let name   = profile.emails[0].value.substring(0, profile.emails[0].value.lastIndexOf("@"));
 
-
-                  var transporter = nodemailer.createTransport({
-                      service: 'gmail',
-                      auth: {
-                          user: 'caliope.no.reply@gmail.com',
-                          pass: 'caliope123'
-                      }
-                  });
-
-                  var mailOptions = {
-                      from: 'caliope.no.reply@gmail.com',
-                      to: profile.emails[0].value,
-                      subject: 'Contraseña temporal Caliope',
-                      text: 'Te hemos asignado una contraseña temporal. Es: ' + password
-                  };
-
-                  transporter.sendMail(mailOptions, function(error, info){
-                      if (error) {
-                          console.log(error);
-                      } else {
-                          console.log('Email sent: ' + info.response);
-                      }
-                  });
+                 mailer(profile.emails[0].value, 'Contraseña temporal Caliope', 'Te hemos asignado una contraseña temporal. Es: ' + password);
 
 
                   fetch(constants.API_URL + "/registro", {
@@ -64,7 +42,7 @@ passport.use(new GoogleStrategy({
                       body: JSON.stringify({
                           username         : name,
                           email            : profile.emails[0].value,
-                          contraseña       : password,
+                          contraseña       : md5(password),
                           nombre           : profile.name.givenName,
                           apellidos        : profile.name.familyName,
                           permiso          : 1,
@@ -75,6 +53,8 @@ passport.use(new GoogleStrategy({
                       })
                   })
                       .then(response => done(null, response))
+                  console.log(password);
+                  console.log(password);
               });
           return done(null, user);
       }
@@ -92,7 +72,6 @@ passport.use(new LocalStrategy(
         .catch(error => done(error));
 
         if (varUser.username === username && varUser.contraseña === password) {
-            console.log("xd");
             return done(null, varUser);
         }
         return done(null, false);
